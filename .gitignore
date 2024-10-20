@@ -1,4 +1,4 @@
 ﻿.env
 node_modules
 .gitignore
-.idea
+/.idea/
