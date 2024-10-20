@@ -1,0 +1,22 @@
+﻿{
+  "PC": {
+    "ICON": "https://www.dropbox.com/scl/fi/9gfdp2etkgw5g8ilwvdsh/BR_SteamLogo.png?rlkey=6zi9mf0i4q6ocr3g1whhwvucq&st=jlohc8py&raw=1",
+    "COLOR": "#000001"
+  },
+  "PS": {
+    "ICON": "https://www.dropbox.com/scl/fi/gfhhfie4q6str6jxk8gve/BR_PlayStationLogo.png?rlkey=sw37ato0mnbsmh2pch5wywmx3&st=tho78ard&raw=1",
+    "COLOR": "#083494"
+  },
+  "XBOX": {
+    "ICON": "https://www.dropbox.com/scl/fi/fks6gtddulyshvkjim0ta/BR_XBoxLogo.png?rlkey=xl0luug5i6lru380txrmgvbi0&st=l9h93xiw&raw=1",
+    "COLOR": "#187C0C"
+  },
+  "VR": {
+    "ICON": "https://www.dropbox.com/scl/fi/7ibdqo3d8cev0kc9wuqmd/BR_VRLogo.png?rlkey=5wts45fdtf3imjjnf9omo11d5&st=zbxljxe7&raw=1",
+    "COLOR": "#C3D5EC"
+  },
+  "TRANSLATION": {
+    "ICON": "https://www.dropbox.com/scl/fi/cy0b4m92k031z7zpke13k/BR_GlobeLogo.png?rlkey=12xeptkfe2rl729ehhagali35&st=11ctwcq9&raw=1",
+    "COLOR": "#F5B60F"
+  }
+}

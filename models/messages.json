@@ -1,0 +1,31 @@
+﻿{
+  "CONFIG": {
+    "RESET": "Successfully set back up data for the server. To view configuration settings, use `/report-view`. To edit configuration settings, use `/report-edit`.",
+    "CANCEL": "Configuration data will no longer be reset."
+  },
+  "INTERACTION": {
+    "MAKE_SELECTION": "Please select the type of issue you are reporting.",
+    "PLATFORM_SELECTION": "Please select what platform you are reporting this bug on. You may add evidence once report details are filled out.",
+    "LANGUAGE_SELECTION": "Please select the language you are reporting an issue for. You may add evidence once report details are filled out.",
+    "HEADSET_SELECTION": "VR bug reports require us to know what headset this occurred on. Please select your VR Headset, or 'Other' if unlisted."
+  },
+  "SAVE_BADGE": {
+    "SELECT": "For assistance regarding corrupted save files, inaccurate legacy badge level, or loss of badges, you will need to reach out to our ModMail service for further instruction.\n\nPlease ensure your messages are enabled, and message the <@1043623513669513266> bot stating your issue."
+  },
+  "BUG_REPORT": {
+    "SUCCESS": "Your report has been submitted. Thank you for helping keep the game bug-free.\n-# ID: {ID}",
+    "ERROR": "Your report could not be submitted at this time. Please try again at a later time.",
+    "TRANSLATION": {
+      "SUCCESS": "Your translation report has been submitted. Thank you for helping keep the game enjoyable for all communities.\n-# ID: {ID}"
+    }
+  },
+  "TECH_SUPPORT": {
+    "SUCCESS": "Your support ticket has been created. Remember that technical issues are not bugs!\n\nPlease visit {CHANNEL} for further assistance on your issue and a volunteer will be with you shortly. Please be patient.",
+    "ERROR": "Failed to create your tech-support thread at this time. Please try again later.",
+    "STARTER": "- Check if your issue is already listed in our <#1041125607599243364> threads!\n- Explain your issue in-depth so we can fully assist.\n- Post screenshots, video, or any kind of media that will help us see the problem you're experiencing.\n- **Post your player-log file, which will help troubleshoot your issue: `%USERPROFILE%\\AppData\\LocalLow\\Kinetic Games\\Phasmophobia\\Player.log`**\n- Having save file corruption issues? DM <@1043623513669513266>!"
+  },
+  "EVIDENCE": {
+    "SUCCESS": "Your report evidence has been submitted.",
+    "ERROR": "Your report evidence could not be submitted at this time. Please try again at a later time."
+  }
+}
