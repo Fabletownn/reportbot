@@ -7,7 +7,7 @@ const path = require('node:path');
 const { Discord, Client, Collection, GatewayIntentBits, Partials, PartialGroupDMChannel } = require('discord.js');
 
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildVoiceStates],
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages],
     partials: [Partials.User, Partials.Channel, Partials.Message, PartialGroupDMChannel],
     allowedMentions: {
         parse: ['users'],
