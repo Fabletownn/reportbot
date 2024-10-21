@@ -65,7 +65,7 @@ async function changeButton(interaction, id) {
     
     const updatedButtons = await buttons.map((button) => {
         if (button.customId === id) {
-            if (id === 'bughandle-notbug') {
+            if (id === 'bughandle-notbug' || id === 'bughandle-transnotbug') {
                 return ButtonBuilder.from(button)
                     .setStyle(ButtonStyle.Danger);
             } else {

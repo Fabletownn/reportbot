@@ -122,35 +122,29 @@ async function createTechPost(interaction, issue) {
     const techSupport = await getTechChannel(interaction);
     const forumTitle = issue.length >= 70 ? `${issue.slice(0, 70)}...` : issue;
     const forumPost = `${interaction.user} is requesting assistance with an in-game issue.\n\`\`\`${issue}\`\`\``;
+    
+    try {
+        const techHelp = await techSupport.threads.create({
+            name: forumTitle,
+            autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
+            message: {
+                content: forumPost,
+            },
+            reason: `${interaction.user.id} submitted tech bug report`
+        });
 
-    if (techSupport) {
-        try {
-            const techHelp = await techSupport.threads.create({
-                name: forumTitle,
-                autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
-                message: {
-                    content: forumPost,
-                },
-                reason: `${interaction.user.id} submitted tech bug report`
-            });
+        await techHelp.send({
+            content: MSGS.TECH_SUPPORT.STARTER
+        });
 
-            await techHelp.send({
-                content: MSGS.TECH_SUPPORT.STARTER
-            });
-
-            await interaction.update({
-                content: MSGS.TECH_SUPPORT.SUCCESS.replace('{CHANNEL}', `<#${techHelp.id}>`),
-                components: [],
-                ephemeral: true
-            });
-        } catch (err) {
-            console.log(err);
-            return interaction.reply({
-                content: MSGS.TECH_SUPPORT.ERROR,
-                ephemeral: true
-            });
-        }
-    } else {
+        await interaction.update({
+            content: MSGS.TECH_SUPPORT.SUCCESS.replace('{CHANNEL}', `<#${techHelp.id}>`),
+            components: [],
+            ephemeral: true
+        });
+    } catch (err) {
+        console.log(err);
+        
         return interaction.reply({
             content: MSGS.TECH_SUPPORT.ERROR,
             ephemeral: true
