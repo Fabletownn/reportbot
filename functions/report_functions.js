@@ -175,11 +175,13 @@ async function getTechChannel(interaction) {
     try {
         const data = await CONFIG.findOne({ guildID: interaction.guild.id });
 
-        if (data)
+        if (data) {
             return interaction.guild.channels.cache.get(data.techforum);
-        else
+        } else {
             return null;
+        }
     } catch (error) {
+        console.log(error);
         return null;
     }
 }

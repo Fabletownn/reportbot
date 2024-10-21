@@ -21,7 +21,6 @@ async function handleConfigInteraction(interaction) {
                     techforum: '',
                     transforum: '',
                     suplang: [],
-                    techerrs: {},
                     pctag: '',
                     vrtag: '',
                     xboxtag: '',
