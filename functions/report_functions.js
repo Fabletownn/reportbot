@@ -124,7 +124,7 @@ async function createTechPost(interaction, issue) {
     const forumPost = `${interaction.user} is requesting assistance with an in-game issue.\n\`\`\`${issue}\`\`\``;
     
     if (!techSupport)
-        console.log('no tech ???'); // TODO: temp
+        console.error('no tech ???'); // TODO: temp
     
     try {
         const techHelp = await techSupport.threads.create({
@@ -146,7 +146,7 @@ async function createTechPost(interaction, issue) {
             ephemeral: true
         });
     } catch (err) {
-        console.log(err);
+        console.error(err);
         
         return interaction.reply({
             content: MSGS.TECH_SUPPORT.ERROR,
@@ -178,18 +178,18 @@ async function getTechChannel(interaction) {
     try {
         const data = await CONFIG.findOne({ guildID: interaction.guild.id });
         
-        console.log(data); // TODO: temp
+        console.error(data); // TODO: temp
 
         if (data) {
-            console.log(interaction.guild.channels.cache.get(data.techforum)); // TODO: temp
+            console.error(interaction.guild.channels.cache.get(data.techforum)); // TODO: temp
             return interaction.guild.channels.cache.get(data.techforum);
         } else {
-            console.log('no data ???'); // TODO: temp
-            console.log(interaction.guild.id); // TODO: temp
+            console.error('no data ???'); // TODO: temp
+            console.error(interaction.guild.id); // TODO: temp
             return null;
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return null;
     }
 }
