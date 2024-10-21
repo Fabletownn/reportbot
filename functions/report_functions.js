@@ -119,12 +119,9 @@ async function createTranslationReport(interaction, language, issue, edit) {
 // Creates a post in the tech-support channel when a non-bug report is submitted
 // *****************************************************************************
 async function createTechPost(interaction, issue) {
-    const techSupport = interaction.guild.channels.cache.get('1082421799578521620');
+    const techSupport = await getTechChannel(interaction);
     const forumTitle = issue.length >= 70 ? `${issue.slice(0, 70)}...` : issue;
     const forumPost = `${interaction.user} is requesting assistance with an in-game issue.\n\`\`\`${issue}\`\`\``;
-    
-    if (!techSupport)
-        console.error('no tech ???'); // TODO: temp
     
     try {
         const techHelp = await techSupport.threads.create({
@@ -180,14 +177,10 @@ async function getTechChannel(interaction) {
         
         console.error(data); // TODO: temp
 
-        if (data) {
-            console.error(interaction.guild.channels.cache.get(data.techforum)); // TODO: temp
+        if (data)
             return interaction.guild.channels.cache.get(data.techforum);
-        } else {
-            console.error('no data ???'); // TODO: temp
-            console.error(interaction.guild.id); // TODO: temp
+        else
             return null;
-        }
     } catch (error) {
         console.error(error);
         return null;
