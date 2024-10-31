@@ -42,6 +42,7 @@ async function handleBugReport(interaction, channel, id) {
             break;
         case "nf":
             await channel.setAppliedTags([data?.nftag]).catch(() => {});
+            await channel.setArchived(false);
             break;
         case "fixed":
             await channel.setAppliedTags([data?.fixedtag]).catch(() => {});

@@ -327,7 +327,8 @@ async function handleModalSubmit(interaction) {
         const reportEvidence = REPORT.formatEvidence(modalEvidenceURL);
 
         if (!reportChannel) return interaction.reply({
-            content: MSGS.EVIDENCE.ERROR
+            content: MSGS.EVIDENCE.ERROR,
+            ephemeral: true
         });
 
         if (reportEvidence) await reportChannel.send({
