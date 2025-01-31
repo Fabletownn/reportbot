@@ -143,12 +143,12 @@ async function createTechPost(interaction, issue) {
             ephemeral: true
         });
     } catch (err) {
-        await interaction.channel.send({ content: `createTechPost Error:\n\`\`\`${err}\`\`\`` });
-        
-        return interaction.reply({
+        await interaction.reply({
             content: MSGS.TECH_SUPPORT.ERROR,
             ephemeral: true
         });
+
+        return interaction.guild.channels.cache.get('1029169352378941502')?.send({ content: `createTechPost Error:\n\`\`\`${err}\`\`\`` });
     }
 }
 
@@ -189,7 +189,7 @@ async function getTechChannel(interaction) {
     } catch (error) {
         console.error(error);
 
-        await interaction.channel.send({ content: `getTechChannel Error:\n\`\`\`${error}\`\`\`` });
+        await interaction.guild.channels.cache.get('1029169352378941502')?.send({ content: `getTechChannel Error:\n\`\`\`${error}\`\`\`` });
         
         return null;
     }
