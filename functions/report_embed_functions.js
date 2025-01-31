@@ -1,5 +1,6 @@
 ﻿const CONFIG = require('../models/config.js');
 const PLATS = require('../models/platformsets.json');
+const {findTag} = require("./button_functions");
 
 // *******************************************************************************************************************
 // Adds any embed fields necessary to an embed, and if exceeds character limit, adds (Continued) fields until complete
@@ -104,23 +105,29 @@ async function setEmbedBody(embed, platform) {
 // Adds the proper forum tag onto a bug report depending on the platform
 // **********************************************************************
 async function setPlatformTag(interaction, channel, platform) {
-    const cData = await CONFIG.findOne({
-        guildID: interaction.guild.id
-    });
+    const cData = await CONFIG.findOne({ guildID: interaction.guild.id });
     
     if (cData) {
         switch (platform.toLowerCase()) {
             case "pc":
-                await channel.setAppliedTags([cData?.pctag]);
+                const pcTag = await findTag(interaction, channel, 'pc');
+                
+                await channel.setAppliedTags([pcTag]);
                 break;
             case "xbox":
-                await channel.setAppliedTags([cData?.xboxtag]);
+                const xboxTag = await findTag(interaction, channel, 'xbox');
+                
+                await channel.setAppliedTags([xboxTag]);
                 break;
             case "playstation":
-                await channel.setAppliedTags([cData?.pstag]);
+                const psTag = await findTag(interaction, channel, 'playstation');
+                
+                await channel.setAppliedTags([psTag]);
                 break;
             case "vr":
-                await channel.setAppliedTags([cData?.vrtag]);
+                const vrTag = await findTag(interaction, channel, 'vr');
+                
+                await channel.setAppliedTags([vrTag]);
                 break;
             default:
                 break;

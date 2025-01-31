@@ -1,4 +1,4 @@
-﻿const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+﻿const { ButtonBuilder, ButtonStyle, ActionRowBuilder, ChannelType } = require('discord.js');
 const CONFIG = require('../models/config.js');
 
 // ************************************
@@ -13,43 +13,68 @@ async function handleBugReport(interaction, channel, id) {
     });
     
     if (!data) return;
-
-    const postTags = channelTags.filter((tagId) => tagId === data?.pctag ||
-        tagId === data?.xboxtag || tagId === data?.pstag || tagId === data?.vrtag);
+    
+    // Platform Tags
+    const pcTag = await findTag(interaction, channel, 'pc');
+    const xboxTag = await findTag(interaction, channel, 'xbox');
+    const psTag = await findTag(interaction, channel, 'playstation');
+    const vrTag = await findTag(interaction, channel, 'vr');
+    
+    const postTags = channelTags.filter((tagId) =>
+        tagId === pcTag ||
+        tagId === xboxTag ||
+        tagId === psTag ||
+        tagId === vrTag);
     
     await changeButton(interaction, id);
     
     switch (buttonId) {
         case "noted":
-            await channel.setAppliedTags([...postTags, data?.notedtag]).catch(() => {});
+            const notedTag = await findTag(interaction, channel, 'noted');
+            
+            await channel.setAppliedTags([...postTags, notedTag]).catch(() => {});
             await channel.setArchived(true);
             break;
         case "known":
-            await channel.setAppliedTags([...postTags, data?.knowntag]).catch(() => {});
+            const knownTag = await findTag(interaction, channel, 'known issue');
+            
+            await channel.setAppliedTags([...postTags, knownTag]).catch(() => {});
             await channel.setArchived(true);
             break;
         case "replicate":
-            await channel.setAppliedTags([...postTags, data?.reptag]);
+            const replicateTag = await findTag(interaction, channel, 'cannot replicate');
+            
+            await channel.setAppliedTags([...postTags, replicateTag]).catch(() => {});
             await channel.setArchived(false);
             break;
         case "log":
-            await channel.setAppliedTags([...postTags, data?.logtag]);
+            const infoTag = await findTag(interaction, channel, 'not enough info');
+            
+            await channel.setAppliedTags([...postTags, infoTag]).catch(() => {});
             await channel.setArchived(false);
             break;
         case "notbug":
-            await channel.setAppliedTags([...postTags, data?.xtag]).catch(() => {});
+            const notbugTag = await findTag(interaction, channel, 'not a bug');
+            
+            await channel.setAppliedTags([...postTags, notbugTag]).catch(() => {});
             await channel.setArchived(true);
             break;
         case "nf":
-            await channel.setAppliedTags([data?.nftag]).catch(() => {});
+            const nfTag = await findTag(interaction, channel, 'needs fixed');
+            
+            await channel.setAppliedTags([nfTag]).catch(() => {});
             await channel.setArchived(false);
             break;
         case "fixed":
-            await channel.setAppliedTags([data?.fixedtag]).catch(() => {});
+            const fixedTag = await findTag(interaction, channel, 'fixed');
+            
+            await channel.setAppliedTags([fixedTag]).catch(() => {});
             await channel.setArchived(true);
             break;
         case "transnotbug":
-            await channel.setAppliedTags([data?.txtag]).catch(() => {});
+            const notissueTag = await findTag(interaction, channel, 'not an issue');
+            
+            await channel.setAppliedTags([notissueTag]).catch(() => {});
             await channel.setArchived(true);
             break;
         default:
@@ -81,6 +106,17 @@ async function changeButton(interaction, id) {
     
     const updatedRow = new ActionRowBuilder().addComponents(updatedButtons);
     await interaction.update({ components: [updatedRow] });
+}
+
+// *****************************
+// Finds and returns a forum tag
+// *****************************
+async function findTag(interaction, channel, tagname) {
+    const tagChannel = (channel.type === ChannelType.GuildForum ? channel : channel.parent); // Get the channel "parent" (the forum, not the thread/post)
+    const foundTag = tagChannel.availableTags.find((tag) => tag.name.toLowerCase() === tagname); // Filtered found tag
+
+    // Return the tag ID if found
+    return foundTag ? foundTag.id : null;
 }
 
 // ***************************
@@ -144,5 +180,6 @@ const transRow = new ActionRowBuilder()
 module.exports = {
     handleBugReport,
     handleRow,
-    transRow
+    transRow,
+    findTag
 }

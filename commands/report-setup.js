@@ -15,21 +15,11 @@ module.exports = {
             const newConfigData = new CONFIG({
                 guildID: interaction.guild.id,
                 reportsforum: '',
+                partnerforum: '',
+                partnerrole: '',
                 techforum: '',
                 transforum: '',
-                suplang: [],
-                pctag: '',
-                vrtag: '',
-                xboxtag: '',
-                pstag: '',
-                notedtag: '',
-                knowntag: '',
-                reptag: '',
-                logtag: '',
-                xtag: '',
-                nftag: '',
-                fixedtag: '',
-                txtag: ''
+                suplang: []
             });
             
             await newConfigData.save()

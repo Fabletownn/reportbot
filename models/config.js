@@ -4,27 +4,11 @@ const configSchema = mongoose.Schema({
     // Basic
     guildID: String,
     reportsforum: String,
+    partnerforum: String,
+    partnerrole: String,
     techforum: String,
     transforum: String,
-    suplang: Array,
-    
-    // Standard Reports - Platform
-    vrtag: String,
-    pctag: String,
-    xboxtag: String,
-    pstag: String,
-    
-    // Standard Reports - Action
-    notedtag: String,
-    knowntag: String,
-    reptag: String,
-    logtag: String,
-    xtag: String,
-    
-    // Translation Reports - Action
-    nftag: String,
-    fixedtag: String,
-    txtag: String
+    suplang: Array
 });
 
 module.exports = mongoose.model("repconfig", configSchema);

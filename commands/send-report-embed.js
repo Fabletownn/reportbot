@@ -11,11 +11,21 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('report-send-embed')
         .setDescription('(Staff) Sends the bug report submit embed to the current channel')
-        .setDefaultMemberPermissions(PermissionFlagsBits.DeafenMembers),
+        .setDefaultMemberPermissions(PermissionFlagsBits.DeafenMembers)
+        .addBooleanOption((option) =>
+            option.setName('partner-version')
+                .setDescription('Partner version of the bug report submit embed')
+                .setRequired(true)
+        ),
     async execute(interaction) {
+        const isPartnerEmbed = interaction.options.getBoolean('partner-version');
+        const embedTitle = isPartnerEmbed ? 'Partners Report System' : 'Report System';
+        const embedColor = isPartnerEmbed ? '#CD2546' : null;
+        
         const reportEmbed = new EmbedBuilder()
-            .setTitle('Report System')
+            .setTitle(embedTitle)
             .addFields(...embedOptions)
+            .setColor(embedColor)
 
         const warningEmbed = new EmbedBuilder()
             .setTitle('Important')

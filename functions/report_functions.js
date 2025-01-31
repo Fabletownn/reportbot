@@ -143,7 +143,7 @@ async function createTechPost(interaction, issue) {
             ephemeral: true
         });
     } catch (err) {
-        console.error(err);
+        await interaction.channel.send({ content: `createTechPost Error:\n\`\`\`${err}\`\`\`` });
         
         return interaction.reply({
             content: MSGS.TECH_SUPPORT.ERROR,
@@ -158,9 +158,16 @@ async function createTechPost(interaction, issue) {
 async function getReportsChannel(interaction) {
     try {
         const data = await CONFIG.findOne({ guildID: interaction.guild.id });
+        const member = interaction.guild.members.cache.get(interaction.user.id);
 
-        if (data)
-            return interaction.guild.channels.cache.get(data.reportsforum);
+        if (data) {
+            if (!data.partnerforum || !data.partnerrole) return null;
+            
+            if (member.roles.cache.has(data.partnerrole))
+                return interaction.guild.channels.cache.get(data.partnerforum);
+            else
+                return interaction.guild.channels.cache.get(data.reportsforum);
+        }
         else
             return null;
     } catch (error) {
@@ -174,8 +181,6 @@ async function getReportsChannel(interaction) {
 async function getTechChannel(interaction) {
     try {
         const data = await CONFIG.findOne({ guildID: interaction.guild.id });
-        
-        console.error(data); // TODO: temp
 
         if (data)
             return interaction.guild.channels.cache.get(data.techforum);
@@ -183,6 +188,9 @@ async function getTechChannel(interaction) {
             return null;
     } catch (error) {
         console.error(error);
+
+        await interaction.channel.send({ content: `getTechChannel Error:\n\`\`\`${error}\`\`\`` });
+        
         return null;
     }
 }
@@ -193,11 +201,16 @@ async function getTechChannel(interaction) {
 async function getTranslationChannel(interaction) {
     try {
         const data = await CONFIG.findOne({ guildID: interaction.guild.id });
+        const member = interaction.guild.members.cache.get(interaction.user.id);
 
-        if (data)
-            return interaction.guild.channels.cache.get(data.transforum);
-        else
-            return null;
+        if (data) {
+            if (!data.partnerforum || !data.partnerrole) return null;
+
+            if (member.roles.cache.has(data.partnerrole))
+                return interaction.guild.channels.cache.get(data.partnerforum);
+            else
+                return interaction.guild.channels.cache.get(data.transforum);
+        }
     } catch (error) {
         return null;
     }

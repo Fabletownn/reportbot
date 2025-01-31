@@ -3,22 +3,12 @@ const CONFIG = require('../models/config.js');
 
 const configOptions = ([
     { name: 'Bug Reports Forum (Channel)', value: 'bugreports' },
+    { name: 'Partner Bug Reports Forum (Channel)', value: 'partnerbugreports' },
+    { name: 'Partner Role (Role)', value: 'partnerrole' },
     { name: 'Tech Support Forum (Channel)', value: 'techsupport' },
     { name: 'Translation Reports Forum (Channel)', value: 'transforum' },
     { name: 'Add Supported Language (String)', value: 'addlang' },
-    { name: 'Remove Supported Language (String)', value: 'removelang' },
-    { name: 'PC Forum Tag (String)', value: 'pctag' },
-    { name: 'VR Forum Tag (String)', value: 'vrtag' },
-    { name: 'XBox Forum Tag (String)', value: 'xboxtag' },
-    { name: 'PlayStation Forum Tag (String)', value: 'pstag' },
-    { name: 'Noted Forum Tag (String)', value: 'notedtag' },
-    { name: 'Known Issue Forum Tag (String)', value: 'knowntag' },
-    { name: 'Cannot Replicate Forum Tag (String)', value: 'reptag' },
-    { name: 'Needs More Info Forum Tag (String)', value: 'logtag' },
-    { name: 'Not A Bug Forum Tag (String)', value: 'xtag' },
-    { name: '[Translation] Needs Fixed Forum Tag (String)', value: 'nftag' },
-    { name: '[Translation] Fixed Forum Tag (String)', value: 'fixedtag' },
-    { name: '[Translation] Not A Bug (String)', value: 'txtag' },
+    { name: 'Remove Supported Language (String)', value: 'removelang' }
 ]);
 
 module.exports = {
@@ -42,13 +32,20 @@ module.exports = {
             option.setName('string')
                 .setDescription('(If configuration requires string) The string that it will be set to')
                 .setRequired(false)
-        ),
+        )
+        .addRoleOption((option) =>
+            option.setName('role')
+                .setDescription('(If configuration requires role) The role that it will be set to')
+                .setRequired(false)
+        )
+    ,
     async execute(interaction) {
         const configOption = interaction.options.getString('config');
         const channelOption = interaction.options.getChannel('channel');
         const stringOption = interaction.options.getString('string');
+        const roleOption = interaction.options.getRole('role');
         
-        if (!channelOption && !stringOption) return interaction.reply({ content: 'Please fill out a configuration value depending on what it requires. The option is labeled in parenthesis after the configuration option (e.g. "PC Forum Tag (ID)" requires "id" option filled out).' });
+        if (!channelOption && !stringOption && !roleOption) return interaction.reply({ content: 'Please fill out a configuration value depending on what it requires. The option is labeled in parenthesis after the configuration option (e.g. "Partner Role (Role)" needs the "role" option filled out).' });
         
         const data = await CONFIG.findOne({
             guildID: interaction.guild.id
@@ -64,6 +61,22 @@ module.exports = {
                 data.save()
                     .catch((err) => console.log(err))
                     .then(() => interaction.reply({ content: `Set the bug reports forum to the channel ${channelOption} successfully.` }));
+                break;
+            case "partnerbugreports":
+                if (!channelOption) return interaction.reply({ content: 'This configuration option requires a "channel" parameter to be filled out.' });
+
+                data.partnerforum = channelOption.id;
+                data.save()
+                    .catch((err) => console.log(err))
+                    .then(() => interaction.reply({ content: `Set the Partner bug reports forum to the channel ${channelOption} successfully.` }));
+                break;
+            case "partnerrole":
+                if (!roleOption) return interaction.reply({ content: 'This configuration option requires a "role" parameter to be filled out.' });
+
+                data.partnerrole = roleOption.id;
+                data.save()
+                    .catch((err) => console.log(err))
+                    .then(() => interaction.reply({ content: `Set the Partner role to <@&${roleOption.id}> successfully.`, allowedMentions: { parse: [] } }));
                 break;
             case "techsupport":
                 if (!channelOption) return interaction.reply({ content: 'This configuration option requires a "channel" parameter to be filled out.' });
@@ -148,108 +161,7 @@ module.exports = {
                 }
                 break;
             default:
-                if (!configOption.endsWith('tag')) return interaction.reply({ content: 'Failed to set configuration value as something went wrong with the command.' });
-                
-                const tagName = configOption.split('tag')[0].toUpperCase();
-                const shownName = tagName === 'PS' ? 'PlayStation' : tagName === 'XBOX' ? 'XBox' : tagName ?
-                                               tagName === 'NOTED' ? 'Noted' : tagName === 'KNOWN' ? 'Known Issue' : 
-                                                   tagName === 'REP' ? 'Cannot Replicate' : tagName === 'LOG' ? 'Needs More Info' : 
-                                                       tagName === 'NF' ? 'Needs Fixed' : tagName === 'FIXED' ? 'Fixed' :
-                                                           tagName === 'TX' ? '[Translation] X' : tagName : tagName;
-                
-                if (!stringOption) return interaction.reply({ content: 'This configuration option requires a "string" parameter to be filled out.' });
-                if (!data.reportsforum) return interaction.reply({ content: 'This configuration option requires the bug reports forum to be set first.' });
-                if (!data.transforum) return interaction.reply({ content: 'This configuration option requires the translation reports forum to be set first.' })
-                
-                const bugChannel = interaction.guild.channels.cache.get(data.reportsforum);
-                const bugTags = bugChannel.availableTags;
-                
-                for (let i = 0; i < bugTags.length; i++) {
-                    if (bugTags[i].id !== stringOption) continue;
-                    
-                    switch (shownName) {
-                        case "PC":
-                            data.pctag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        case "VR":
-                            data.vrtag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        case "XBox":
-                            data.xboxtag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        case "PlayStation":
-                            data.pstag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        case "Noted":
-                            data.notedtag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        case "Known Issue":
-                            data.knowntag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        case "Cannot Replicate":
-                            data.reptag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        case "Needs More Info":
-                            data.logtag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        case "X":
-                            data.xtag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        default:
-                            return interaction.reply({ content: 'Failed to set that data as something went wrong.' });
-                    }
-                    
-                    return interaction.reply({ content: `Set the ${shownName} forum tag to the \`${bugTags[i].name}\` tag successfully.` });
-                }
-
-                const transChannel = interaction.guild.channels.cache.get(data.transforum);
-                const transTags = transChannel.availableTags;
-
-                for (let i = 0; i < transTags.length; i++) {
-                    if (transTags[i].id !== stringOption) continue;
-                    
-                    switch (shownName) {
-                        case "Needs Fixed":
-                            data.nftag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        case "Fixed":
-                            data.fixedtag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        case "[Translation] X":
-                            data.txtag = stringOption;
-                            data.save()
-                                .catch((err) => console.log(err));
-                            break;
-                        default:
-                            return interaction.reply({ content: 'Failed to set that data as something went wrong.' });
-                    }
-
-                    return interaction.reply({ content: `Set the ${shownName} forum tag to the \`${transTags[i].name}\` tag successfully.` });
-                }
-                
-                await interaction.reply({ content: `Failed to find a forum tag with that ID.` });
+                await interaction.reply({ content: `That is not a configuration option.` });
                 break;
         }
     },
