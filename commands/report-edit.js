@@ -14,7 +14,7 @@ const configOptions = ([
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('report-edit')
-        .setDescription('(Staff) Edits bug report configuration settings')
+        .setDescription('(Admin) Edits bug report configuration settings')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addStringOption((option) =>
             option.setName('config')

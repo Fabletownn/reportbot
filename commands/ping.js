@@ -4,8 +4,8 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ping')
-        .setDescription('(Staff) Provides the bot\'s ping, trip latency, and heartbeat')
-        .setDefaultMemberPermissions(PermissionFlagsBits.DeafenMembers),
+        .setDescription('Provides the bot\'s ping, trip latency, and heartbeat')
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
     async execute(interaction) {
         const pingReceived = await interaction.reply({ content: 'Pinging..', fetchReply: true, ephemeral: false });
 

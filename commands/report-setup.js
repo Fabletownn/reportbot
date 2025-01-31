@@ -4,7 +4,7 @@ const CONFIG = require('../models/config.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('report-setup')
-        .setDescription('(Staff) Sets up (or resets) bug report configuration settings')
+        .setDescription('(Admin) Sets up (or resets) bug report configuration settings')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
         const data = await CONFIG.findOne({

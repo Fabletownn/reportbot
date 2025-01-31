@@ -10,8 +10,8 @@ const embedOptions = ([
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('report-send-embed')
-        .setDescription('(Staff) Sends the bug report submit embed to the current channel')
-        .setDefaultMemberPermissions(PermissionFlagsBits.DeafenMembers)
+        .setDescription('(Admin) Sends the bug report submit embed to the current channel')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addBooleanOption((option) =>
             option.setName('partner-version')
                 .setDescription('Partner version of the bug report submit embed')
