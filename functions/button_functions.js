@@ -43,15 +43,15 @@ async function handleBugReport(interaction, channel, id) {
             break;
         case "replicate":
             const replicateTag = await findTag(interaction, channel, 'cannot replicate');
-            
-            await channel.setAppliedTags([...postTags, replicateTag]).catch(() => {});
+
             await channel.setArchived(false);
+            await channel.setAppliedTags([...postTags, replicateTag]).catch(() => {});
             break;
         case "log":
             const infoTag = await findTag(interaction, channel, 'not enough info');
-            
-            await channel.setAppliedTags([...postTags, infoTag]).catch(() => {});
+
             await channel.setArchived(false);
+            await channel.setAppliedTags([...postTags, infoTag]).catch(() => {});
             break;
         case "notbug":
             const notbugTag = await findTag(interaction, channel, 'not a bug');
@@ -61,9 +61,9 @@ async function handleBugReport(interaction, channel, id) {
             break;
         case "nf":
             const nfTag = await findTag(interaction, channel, 'needs fixed');
-            
-            await channel.setAppliedTags([nfTag]).catch(() => {});
+
             await channel.setArchived(false);
+            await channel.setAppliedTags([nfTag]).catch(() => {});
             break;
         case "fixed":
             const fixedTag = await findTag(interaction, channel, 'fixed');
@@ -139,7 +139,7 @@ const repButton = new ButtonBuilder()
 
 const logButton = new ButtonBuilder()
     .setCustomId('bughandle-log')
-    .setLabel('Needs More Info')
+    .setLabel('Not Enough Info')
     .setStyle(ButtonStyle.Secondary)
 
 const xButton = new ButtonBuilder()
