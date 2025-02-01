@@ -1,5 +1,5 @@
 ﻿const { EmbedBuilder, ThreadAutoArchiveDuration, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const { handleRow, transRow } = require('../functions/button_functions');
+const { handleRow, transRow, findTag } = require('../functions/button_functions');
 const CONFIG = require('../models/config.js');
 const MSGS = require('../models/messages.json');
 const EMBEDS = require('../functions/report_embed_functions.js');
@@ -94,6 +94,10 @@ async function createTranslationReport(interaction, language, issue, edit) {
                 },
                 reason: `${interaction.user.id} submitted report`
             });
+            
+            // Give it the "Needs Fixed" tag once it gets posted
+            const nfTag = await findTag(interaction, report.parent, 'needs fixed');
+            if (nfTag) await report.setAppliedTags([nfTag]).catch(() => {});
 
             await interaction.update({
                 content: MSGS.BUG_REPORT.TRANSLATION.SUCCESS.replace('{ID}', report.id),
