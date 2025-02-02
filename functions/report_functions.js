@@ -139,10 +139,6 @@ async function createTechPost(interaction, issue) {
             appliedTags: [unfixedTag]
         });
 
-        await techHelp.send({
-            content: MSGS.TECH_SUPPORT.STARTER
-        });
-
         await interaction.update({
             content: MSGS.TECH_SUPPORT.SUCCESS.replace('{CHANNEL}', `<#${techHelp.id}>`),
             components: [],
