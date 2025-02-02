@@ -126,6 +126,7 @@ async function createTechPost(interaction, issue) {
     const techSupport = await getTechChannel(interaction);
     const forumTitle = issue.length >= 70 ? `${issue.slice(0, 70)}...` : issue;
     const forumPost = `${interaction.user} is requesting assistance with an in-game issue.\n\`\`\`${issue}\`\`\``;
+    const unfixedTag = await findTag(interaction, techSupport, 'unfixed');
     
     try {
         const techHelp = await techSupport.threads.create({
@@ -134,7 +135,8 @@ async function createTechPost(interaction, issue) {
             message: {
                 content: forumPost,
             },
-            reason: `${interaction.user.id} submitted tech bug report`
+            reason: `${interaction.user.id} submitted tech bug report`,
+            appliedTags: [unfixedTag]
         });
 
         await techHelp.send({
