@@ -134,6 +134,7 @@ async function createTechPost(interaction, issue) {
             autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
             message: {
                 content: forumPost,
+                allowedMentions: { parse: [] }
             },
             reason: `${interaction.user.id} submitted tech bug report`,
             appliedTags: [unfixedTag]
@@ -145,12 +146,10 @@ async function createTechPost(interaction, issue) {
             ephemeral: true
         });
     } catch (err) {
-        await interaction.reply({
+        return interaction.reply({
             content: MSGS.TECH_SUPPORT.ERROR,
             ephemeral: true
         });
-
-        return interaction.guild.channels.cache.get('1029169352378941502')?.send({ content: `createTechPost Error:\n\`\`\`${err}\`\`\`` });
     }
 }
 
@@ -190,8 +189,6 @@ async function getTechChannel(interaction) {
             return null;
     } catch (error) {
         console.error(error);
-
-        await interaction.guild.channels.cache.get('1029169352378941502')?.send({ content: `getTechChannel Error:\n\`\`\`${error}\`\`\`` });
         
         return null;
     }
