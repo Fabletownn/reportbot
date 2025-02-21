@@ -125,7 +125,7 @@ async function createTranslationReport(interaction, language, issue, edit) {
 async function createTechPost(interaction, issue) {
     const techSupport = await getTechChannel(interaction);
     const forumTitle = issue.length >= 70 ? `${issue.slice(0, 70)}...` : issue;
-    const forumPost = `${interaction.user} is requesting assistance with an in-game issue.\n\`\`\`${issue}\`\`\``;
+    const forumPost = `${interaction.user} is requesting assistance with an in-game issue.\n\`\`\`${issue.replace(/[`]/g, '')}\`\`\``;
     const unfixedTag = await findTag(interaction, techSupport, 'unfixed');
     
     try {
@@ -139,6 +139,8 @@ async function createTechPost(interaction, issue) {
             reason: `${interaction.user.id} submitted tech bug report`,
             appliedTags: [unfixedTag]
         });
+        
+        await techHelp.send({ content: `${interaction.user}` }).then((m) => m.delete());
 
         await interaction.update({
             content: MSGS.TECH_SUPPORT.SUCCESS.replace('{CHANNEL}', `<#${techHelp.id}>`),
